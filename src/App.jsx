@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Introduction from './components/Introduction';
@@ -25,7 +25,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       
       <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-violet-500/20">
@@ -84,6 +84,6 @@ export default function App() {
         {/* Footer */}
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
