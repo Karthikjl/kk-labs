@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User, Mail, MessageSquare } from 'lucide-react';
 
 const GithubIcon = (props) => (
@@ -17,6 +17,7 @@ const LinkedinIcon = (props) => (
 );
 
 export default function AboutCreator() {
+  const [imageError, setImageError] = useState(false);
   const roles = [
     { label: "Developer", color: "bg-violet-500/10 text-violet-400 border-violet-500/20" },
     { label: "Creator", color: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
@@ -44,19 +45,18 @@ export default function AboutCreator() {
                 
                 {/* Avatar Image container */}
                 <div className="relative w-36 h-36 rounded-full overflow-hidden border-2 border-slate-950 bg-slate-900 flex items-center justify-center">
-                  <img 
-                    src="/avatar.png" 
-                    alt="Karthik - KK Labs Creator" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      // Fallback if image fails to load
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  <div className="hidden w-full h-full items-center justify-center bg-slate-900 text-slate-400">
-                    <User className="h-10 w-10 text-slate-500" />
-                  </div>
+                  {!imageError ? (
+                    <img 
+                      src="./avatar.png" 
+                      alt="Karthik - KK Labs Creator" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={() => setImageError(true)}
+                    />
+                  ) : (
+                    <div className="flex w-full h-full items-center justify-center bg-slate-900 text-slate-400">
+                      <User className="h-10 w-10 text-slate-500" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
