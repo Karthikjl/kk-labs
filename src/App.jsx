@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Introduction from './components/Introduction';
@@ -9,80 +10,80 @@ import Vision from './components/Vision';
 import AboutCreator from './components/AboutCreator';
 import Footer from './components/Footer';
 
+// Helper component to scroll window to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // IntersectionObserver to dynamically highlight navbar links as user scrolls
-  useEffect(() => {
-    const sections = ['home', 'labs', 'projects', 'updates', 'about'];
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -60% 0px', // Trigger when section occupies the middle of the viewport
-      threshold: 0
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) observer.unobserve(el);
-      });
-    };
-  }, []);
-
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-violet-500/20">
+    <HashRouter>
+      <ScrollToTop />
       
-      {/* Sticky Navigation Bar */}
-      <Navbar 
-        activeSection={activeSection} 
-        onSectionChange={setActiveSection} 
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
+      <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-violet-500/20">
+        
+        {/* Navigation Bar */}
+        <Navbar 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
 
-      {/* Main Content Layout */}
-      <main className="flex-grow">
-        {/* 1. Hero Section */}
-        <Hero />
+        {/* Routed Page Content */}
+        <main className="flex-grow">
+          <Routes>
+            {/* Home Page */}
+            <Route 
+              path="/" 
+              element={
+                <>
+                  <Hero />
+                  <Introduction />
+                </>
+              } 
+            />
 
-        {/* 2. Introduction Section */}
-        <Introduction />
+            {/* Labs Page */}
+            <Route 
+              path="/labs" 
+              element={<Explore searchQuery={searchQuery} />} 
+            />
 
-        {/* 3. Explore Categories Section */}
-        <Explore searchQuery={searchQuery} />
+            {/* Projects Page */}
+            <Route 
+              path="/projects" 
+              element={<Featured />} 
+            />
 
-        {/* 4. Featured Content Section */}
-        <Featured />
+            {/* Updates Page */}
+            <Route 
+              path="/updates" 
+              element={<Timeline />} 
+            />
 
-        {/* 5. Recent Activity Timeline */}
-        <Timeline />
+            {/* About Page */}
+            <Route 
+              path="/about" 
+              element={
+                <>
+                  <Vision />
+                  <AboutCreator />
+                </>
+              } 
+            />
+          </Routes>
+        </main>
 
-        {/* 6. Vision Section */}
-        <Vision />
-
-        {/* 7. About Creator Section */}
-        <AboutCreator />
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </HashRouter>
   );
 }

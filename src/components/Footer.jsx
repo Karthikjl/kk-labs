@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FlaskConical, Mail, ArrowUp } from 'lucide-react';
 
 const GithubIcon = (props) => (
@@ -45,11 +46,11 @@ export default function Footer() {
           <div className="md:col-span-4 space-y-4 text-center md:text-left">
             <h4 className="text-xs font-bold text-slate-350 uppercase tracking-widest">Workbench sections</h4>
             <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-xs font-medium text-slate-450">
-              <a href="#home" className="hover:text-slate-200 transition-colors">Home</a>
-              <a href="#labs" className="hover:text-slate-200 transition-colors">Labs</a>
-              <a href="#projects" className="hover:text-slate-200 transition-colors">Projects</a>
-              <a href="#updates" className="hover:text-slate-200 transition-colors">Updates</a>
-              <a href="#about" className="hover:text-slate-200 transition-colors">About</a>
+              <Link to="/" className="hover:text-slate-200 transition-colors">Home</Link>
+              <Link to="/labs" className="hover:text-slate-200 transition-colors">Labs</Link>
+              <Link to="/projects" className="hover:text-slate-200 transition-colors">Projects</Link>
+              <Link to="/updates" className="hover:text-slate-200 transition-colors">Updates</Link>
+              <Link to="/about" className="hover:text-slate-200 transition-colors">About</Link>
             </div>
           </div>
 

@@ -1,35 +1,27 @@
 import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { FlaskConical, Search, Menu, X } from 'lucide-react';
 
-export default function Navbar({ activeSection, onSectionChange, searchQuery, onSearchChange }) {
+export default function Navbar({ searchQuery, onSearchChange }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'labs', label: 'Labs' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'updates', label: 'Updates' },
-    { id: 'about', label: 'About' }
+    { path: '/', label: 'Home' },
+    { path: '/labs', label: 'Labs' },
+    { path: '/projects', label: 'Projects' },
+    { path: '/updates', label: 'Updates' },
+    { path: '/about', label: 'About' }
   ];
-
-  const handleNavClick = (sectionId) => {
-    onSectionChange(sectionId);
-    setIsOpen(false);
-    
-    // Smooth scroll to section if we are on the homepage
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/85 border-b border-slate-900/80 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
           {/* Logo */}
-          <div 
-            onClick={() => handleNavClick('home')}
+          <Link 
+            to="/"
+            onClick={() => setIsOpen(false)}
             className="flex items-center space-x-2.5 cursor-pointer group"
           >
             <div className="p-2 bg-gradient-to-tr from-violet-600 to-cyan-500 rounded-xl group-hover:rotate-6 transition-transform duration-300">
@@ -38,25 +30,32 @@ export default function Navbar({ activeSection, onSectionChange, searchQuery, on
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-50 to-slate-200 bg-clip-text text-transparent group-hover:from-violet-400 group-hover:to-cyan-400 transition-all duration-300">
               KK Labs
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`relative py-1 text-sm font-medium transition-colors duration-200 ${
-                  activeSection === item.id 
-                    ? 'text-cyan-400 font-semibold' 
-                    : 'text-slate-400 hover:text-slate-100'
-                }`}
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === '/'}
+                className={({ isActive }) => 
+                  `relative py-1 text-sm font-medium transition-colors duration-200 ${
+                    isActive 
+                      ? 'text-cyan-400 font-semibold' 
+                      : 'text-slate-400 hover:text-slate-100'
+                  }`
+                }
               >
-                {item.label}
-                {activeSection === item.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full" />
+                {({ isActive }) => (
+                  <>
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full" />
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
             ))}
           </div>
 
@@ -74,7 +73,7 @@ export default function Navbar({ activeSection, onSectionChange, searchQuery, on
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-3">
-            {/* Mobile Search Icon button or simple field */}
+            {/* Mobile Search field */}
             <div className="relative">
               <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500" />
               <input
@@ -100,17 +99,21 @@ export default function Navbar({ activeSection, onSectionChange, searchQuery, on
       {isOpen && (
         <div className="md:hidden border-b border-slate-900/80 bg-slate-950/95 py-3 px-4 space-y-1 animate-fadeIn">
           {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                activeSection === item.id
-                  ? 'bg-slate-900 text-cyan-400 border-l-2 border-cyan-500'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-900/40'
-              }`}
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/'}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) => 
+                `block px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-slate-900 text-cyan-400 border-l-2 border-cyan-500'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-slate-900/40'
+                }`
+              }
             >
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </div>
       )}
