@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KK Labs</title>
+    <!--
+      GitHub Pages SPA redirect trick.
+      When a user hits a URL like /updates directly, GitHub Pages serves this
+      404.html. This script re-encodes the path into a query string and
+      redirects to index.html, which decodes it back via history.replaceState.
+      
+      pathSegmentsToKeep = 0  →  correct for a custom domain at the root.
+      If hosted at github.io/kk-labs/ (no custom domain), set it to 1.
+    -->
+    <script>
+      var pathSegmentsToKeep = 0;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
