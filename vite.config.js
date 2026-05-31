@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-// base is set to the GitHub repo name so assets resolve correctly
-// when hosted at: https://<username>.github.io/kk-labs/
+// base: '/' — correct for custom domains (e.g. karthikjl.dpdns.org)
+// GitHub Pages serves custom-domain sites from the root, not a subpath.
 export default defineConfig({
   plugins: [react()],
-  base: '/kk-labs/',
+  base: '/',
 })
